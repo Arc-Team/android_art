@@ -361,9 +361,6 @@ static void RunOptimizations(HGraph* graph,
   InstructionSimplifier* simplify1 = new (arena) InstructionSimplifier(graph, stats);
   HBooleanSimplifier* boolean_simplify = new (arena) HBooleanSimplifier(graph);
 
-  HInliner* inliner = new (arena) HInliner(
-      graph, dex_compilation_unit, dex_compilation_unit, driver, stats);
-
   HConstantFolding* fold2 = new (arena) HConstantFolding(graph, "constant_folding_after_inlining");
   SideEffectsAnalysis* side_effects = new (arena) SideEffectsAnalysis(graph);
   GVNOptimization* gvn = new (arena) GVNOptimization(graph, *side_effects);
@@ -384,7 +381,6 @@ static void RunOptimizations(HGraph* graph,
     fold1,
     simplify1,
     dce1,
-    inliner,
     GetMoreOptimizing(graph, dex_compilation_unit, driver, stats),
     // BooleanSimplifier depends on the InstructionSimplifier removing redundant
     // suspend checks to recognize empty blocks.
