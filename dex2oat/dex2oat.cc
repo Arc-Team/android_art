@@ -1107,6 +1107,7 @@ class Dex2Oat FINAL {
                             compile_pic ? OatHeader::kTrueValue : OatHeader::kFalseValue);
       key_value_store_->Put(OatHeader::kDebuggableKey,
                             debuggable ? OatHeader::kTrueValue : OatHeader::kFalseValue);
+      key_value_store_->Put(OatHeader::kXposedOatVersionKey, OatHeader::kXposedOatCurrentVersion);
     }
   }
 
@@ -1358,6 +1359,14 @@ class Dex2Oat FINAL {
     for (const auto& dex_file : dex_files_) {
       if (dex_file->GetOatDexFile() == nullptr && !dex_file->EnableWrite()) {
         PLOG(ERROR) << "Failed to make .dex file writeable '" << dex_file->GetLocation() << "'\n";
+      }
+    }
+
+    if (image_) {
+      auto const oat_dex_file = dex_files_[0]->GetOatDexFile();
+      if (oat_dex_file != nullptr) {
+        uint32_t checksum = oat_dex_file->GetOatFile()->GetOatHeader().GetChecksum();
+        key_value_store_->Put(OatHeader::kXposedOriginalChecksumKey, StringPrintf("0x%08x", checksum));
       }
     }
 
