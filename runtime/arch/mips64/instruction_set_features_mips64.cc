@@ -77,7 +77,7 @@ Mips64InstructionSetFeatures::AddFeaturesFromSplitString(
     // We don't have any features.
     std::string feature = Trim(*i);
     *error_msg = StringPrintf("Unknown instruction set feature: '%s'", feature.c_str());
-    return nullptr;
+    LOG(WARNING) << *error_msg;
   }
   return std::unique_ptr<const InstructionSetFeatures>(new Mips64InstructionSetFeatures());
 }

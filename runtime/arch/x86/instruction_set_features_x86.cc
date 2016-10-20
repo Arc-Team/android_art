@@ -308,7 +308,7 @@ std::unique_ptr<const InstructionSetFeatures> X86InstructionSetFeatures::AddFeat
       has_POPCNT = false;
     } else {
       *error_msg = StringPrintf("Unknown instruction set feature: '%s'", feature.c_str());
-      return nullptr;
+      LOG(WARNING) << *error_msg;
     }
   }
   return Create(x86_64, has_SSSE3, has_SSE4_1, has_SSE4_2, has_AVX, has_AVX2, has_POPCNT);

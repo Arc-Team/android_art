@@ -190,7 +190,7 @@ MipsInstructionSetFeatures::AddFeaturesFromSplitString(
       r6 = false;
     } else {
       *error_msg = StringPrintf("Unknown instruction set feature: '%s'", feature.c_str());
-      return nullptr;
+      LOG(WARNING) << *error_msg;
     }
   }
   return std::unique_ptr<const InstructionSetFeatures>(
