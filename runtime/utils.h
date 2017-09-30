@@ -402,6 +402,8 @@ inline void FlushInstructionCache(char* begin, char* end) {
   __builtin___clear_cache(begin, end);
 }
 
+bool IsSamsungROM();
+
 }  // namespace art
 
 #endif  // ART_RUNTIME_UTILS_H_
