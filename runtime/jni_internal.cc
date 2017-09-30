@@ -2159,6 +2159,11 @@ class JNI {
         ReportInvalidJNINativeMethod(soa, c, "native function", i, return_errors);
         return JNI_ERR;
       }
+      bool is_optional = false;
+      if (*sig == '?') {
+        is_optional = true;
+        ++sig;
+      }
       bool is_fast = false;
       // Notes about fast JNI calls:
       //
@@ -2222,6 +2227,9 @@ class JNI {
       }
 
       if (m == nullptr) {
+        if (is_optional) {
+          continue;
+        }
         LOG(return_errors ? ERROR : INTERNAL_FATAL) << "Failed to register native method "
             << PrettyDescriptor(c) << "." << name << sig << " in "
             << c->GetDexCache()->GetLocation()->ToModifiedUtf8();
