@@ -26,7 +26,7 @@
 namespace art {
 
 Arm64FeaturesUniquePtr Arm64InstructionSetFeatures::FromVariant(
-    const std::string& variant, std::string* error_msg) {
+    const std::string& variant, std::string* error_msg ATTRIBUTE_UNUSED) {
   // Look for variants that need a fix for a53 erratum 835769.
   static const char* arm64_variants_with_a53_835769_bug[] = {
       // Pessimistically assume all generic CPUs are cortex-a53.
@@ -54,10 +54,7 @@ Arm64FeaturesUniquePtr Arm64InstructionSetFeatures::FromVariant(
         "kryo"
     };
     if (!FindVariantInArray(arm64_known_variants, arraysize(arm64_known_variants), variant)) {
-      std::ostringstream os;
-      os << "Unexpected CPU variant for Arm64: " << variant;
-      *error_msg = os.str();
-      return nullptr;
+      LOG(WARNING) << "Unexpected CPU variant for Arm64: " << variant;
     }
   }
 
